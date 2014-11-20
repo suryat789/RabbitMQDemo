@@ -8,11 +8,12 @@ public class Sender {
 	private static final String EXCHANGE_NAME = "TestExchange";
 
 	public static void main(String[] argv) throws Exception {
+		
 		String message = null;
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("10.74.230.148");
-		factory.setUsername("xxx");
-		factory.setPassword("xxx");
+		factory.setUsername("disney");
+		factory.setPassword("disney");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 

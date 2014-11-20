@@ -4,10 +4,10 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
 
-public class Receiver {
+public class ReceiverRouting {
 
-	private static final String EXCHANGE_NAME = "TestExchange";
-
+	private static final String EXCHANGE_NAME = "DisneyExchange";
+	private static final String ROUTING_KEY = "DisneyRoutingKey1";
 	public static void main(String[] argv) throws Exception {
 
 		ConnectionFactory factory = new ConnectionFactory();
@@ -18,7 +18,8 @@ public class Receiver {
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+		channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
+		
 		String queueName = channel.queueDeclare().getQueue();
 		channel.queueBind(queueName, EXCHANGE_NAME, "");
 
@@ -31,7 +32,7 @@ public class Receiver {
 		while (true) {
 			delivery = consumer.nextDelivery();
 			message = new String(delivery.getBody());
-
+			System.out.println("RoutingKey: " + delivery.getEnvelope().getRoutingKey());
 			System.out.println("Received '" + message + "'");   
 		}
 	}
